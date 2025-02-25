@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -25,10 +26,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  private final PWMSparkMax m_frontLeft = new PWMSparkMax(Constants.DriveConstants.kFrontLeftMotorPort);
-  private final PWMSparkMax m_rearLeft = new PWMSparkMax(Constants.DriveConstants.kRearLeftMotorPort);
-  private final PWMSparkMax m_frontRight = new PWMSparkMax(Constants.DriveConstants.kFrontRightMotorPort);
-  private final PWMSparkMax m_rearRight = new PWMSparkMax(Constants.DriveConstants.kRearRightMotorPort);
+  private final SparkMax m_frontLeft = new SparkMax(2,MotorType.kBrushless);
+  private final SparkMax m_rearLeft = new SparkMax(0,MotorType.kBrushless);
+  private final SparkMax m_frontRight = new SparkMax(3,MotorType.kBrushless);
+  private final SparkMax m_rearRight = new SparkMax(1,MotorType.kBrushless);
 
   private final MecanumDrive m_drive =
       new MecanumDrive(m_frontLeft::set, m_rearLeft::set, m_frontRight::set, m_rearRight::set);
