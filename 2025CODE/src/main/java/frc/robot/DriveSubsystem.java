@@ -1,6 +1,7 @@
 package main.java.frc.robot;
 
 
+
 //import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -9,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.cameraserver.CameraServer;
 
@@ -26,10 +26,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  private final SparkMax m_frontLeft = new SparkMax(2,MotorType.kBrushless);
-  private final SparkMax m_rearLeft = new SparkMax(0,MotorType.kBrushless);
+  private final SparkMax m_frontLeft = new SparkMax(4,MotorType.kBrushless);
+  private final SparkMax m_rearLeft = new SparkMax(2,MotorType.kBrushless);
   private final SparkMax m_frontRight = new SparkMax(3,MotorType.kBrushless);
   private final SparkMax m_rearRight = new SparkMax(1,MotorType.kBrushless);
+
 
   private final MecanumDrive m_drive =
       new MecanumDrive(m_frontLeft::set, m_rearLeft::set, m_frontRight::set, m_rearRight::set);
@@ -245,4 +246,5 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+
 }
