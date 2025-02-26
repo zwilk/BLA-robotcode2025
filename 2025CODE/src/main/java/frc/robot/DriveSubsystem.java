@@ -40,11 +40,13 @@ private final XboxController m_joystick = new XboxController(0);
 final JoystickButton l2 = new JoystickButton(m_joystick, 9);
 final JoystickButton r2 = new JoystickButton(m_joystick, 10);
 public void tempDriveProgram(){
-        if (m_joystick.){
-          m_frontLeft.set(.2);
-          m_frontRight.set(.2);
-          m_rearLeft.set(.2);
-          m_rearRight.set(.2);
+        if (m_joystick.getAButtonPressed()){//forward
+
+          drive(0,.2,0,false);
+          // m_frontLeft.set(.2);
+          // m_frontRight.set(.2);
+          // m_rearLeft.set(.2);
+          // m_rearRight.set(.2);
          }
          else if (r2==button){
           m_frontLeft.set(-0.2);
