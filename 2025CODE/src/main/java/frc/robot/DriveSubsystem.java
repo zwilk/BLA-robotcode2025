@@ -3,11 +3,15 @@ package main.java.frc.robot;
 
 
 //import edu.wpi.first.wpilibj.CAN;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.Joystick;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
+import java.util.function.IntFunction;
 
 import com.revrobotics.spark.SparkMax;
 
@@ -23,18 +27,37 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class DriveSubsystem extends SubsystemBase {
+  
   private final SparkMax m_frontLeft = new SparkMax(4,MotorType.kBrushless);
   private final SparkMax m_rearLeft = new SparkMax(2,MotorType.kBrushless);
   private final SparkMax m_frontRight = new SparkMax(3,MotorType.kBrushless);
   private final SparkMax m_rearRight = new SparkMax(1,MotorType.kBrushless);
-
-
+private final XboxController m_joystick = new XboxController(0);
+final JoystickButton l2 = new JoystickButton(m_joystick, 9);
+final JoystickButton r2 = new JoystickButton(m_joystick, 10);
+public void tempDriveProgram(){
+        if (m_joystick.){
+          m_frontLeft.set(.2);
+          m_frontRight.set(.2);
+          m_rearLeft.set(.2);
+          m_rearRight.set(.2);
+         }
+         else if (r2==button){
+          m_frontLeft.set(-0.2);
+          m_frontRight.set(-0.2);
+          m_rearLeft.set(-0.2);
+          m_rearRight.set(-0.2);
+         }
+}
   private final MecanumDrive m_drive =
       new MecanumDrive(m_frontLeft::set, m_rearLeft::set, m_frontRight::set, m_rearRight::set);
 
+      
+      
   // The front-left-side drive encoder
   private final Encoder m_frontLeftEncoder =
       new Encoder(
@@ -96,6 +119,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(m_gyro.getRotation2d(), getCurrentWheelDistances());
+
   }
 
   /**
@@ -246,5 +270,6 @@ public class DriveSubsystem extends SubsystemBase {
   public double getTurnRate() {
     return -m_gyro.getRate();
   }
+  
 
 }
