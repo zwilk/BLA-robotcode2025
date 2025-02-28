@@ -37,22 +37,23 @@ public class DriveSubsystem extends SubsystemBase {
   private final SparkMax m_frontRight = new SparkMax(3,MotorType.kBrushless);
   private final SparkMax m_rearRight = new SparkMax(1,MotorType.kBrushless);
 private final XboxController m_joystick = new XboxController(0);
-final JoystickButton l2 = new JoystickButton(m_joystick, 9);
-final JoystickButton r2 = new JoystickButton(m_joystick, 10);
+final JoystickButton l2 = new JoystickButton(m_joystick, 5);
+final JoystickButton r2 = new JoystickButton(m_joystick, 6);
 public void tempDriveProgram(){
-        if (m_joystick.getAButtonPressed()){//forward
+        if (m_joystick.getLeftBumperButtonPressed()){//forward
 
           drive(0,.2,0,false);
-          // m_frontLeft.set(.2);
-          // m_frontRight.set(.2);
-          // m_rearLeft.set(.2);
-          // m_rearRight.set(.2);
+          //  m_frontLeft.set(.2);
+          //  m_frontRight.set(.2);
+          //  m_rearLeft.set(.2);
+          //  m_rearRight.set(.2);
          }
-         else if (r2==button){
-          m_frontLeft.set(-0.2);
-          m_frontRight.set(-0.2);
-          m_rearLeft.set(-0.2);
-          m_rearRight.set(-0.2);
+         else if (m_joystick.getRightBumperButtonPressed()){
+          drive(0, -0.2, 0, false);
+          // m_frontLeft.set(-0.2);
+          // m_frontRight.set(-0.2);
+          // m_rearLeft.set(-0.2);
+          // m_rearRight.set(-0.2);
          }
 }
   private final MecanumDrive m_drive =
