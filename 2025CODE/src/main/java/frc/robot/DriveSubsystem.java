@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 
 public class DriveSubsystem extends SubsystemBase {
-  //sets the spark maxes tp the correct motorType and ID
+  //sets the spark maxes to the correct motorType and CanID
   private final SparkMax m_frontLeft = new SparkMax(4,MotorType.kBrushless);
   private final SparkMax m_rearLeft = new SparkMax(2,MotorType.kBrushless);
   private final SparkMax m_frontRight = new SparkMax(3,MotorType.kBrushless);
@@ -40,8 +40,11 @@ private final XboxController m_joystick = new XboxController(0);
 //sets the buttons onto the controller to the respective button on the joystick
 final JoystickButton l2 = new JoystickButton(m_joystick, 5);
 final JoystickButton r2 = new JoystickButton(m_joystick, 6);
+/** 
+ * turns on the motors and gets the bot to drive 
+*/
 public void tempDriveProgram(){
-  //when the bumpers are hit it goes forward or bacwards
+  //when the bumper buttons are hit it goes forward or bacwards
         if (m_joystick.getLeftBumperButtonPressed()){//forward
 
           drive(0,.2,0,false);
@@ -58,6 +61,7 @@ public void tempDriveProgram(){
           // m_rearRight.set(-0.2);
          }
 }
+//sets the motors to the drive speed
   private final MecanumDrive m_drive =
       new MecanumDrive(m_frontLeft::set, m_rearLeft::set, m_frontRight::set, m_rearRight::set);
 
@@ -101,7 +105,9 @@ public void tempDriveProgram(){
           m_gyro.getRotation2d(),
           new MecanumDriveWheelPositions());
 
-  /** Creates a new DriveSubsystem. */
+  /**
+   *  Creates a new DriveSubsystem. 
+   */
   public DriveSubsystem() {
     SendableRegistry.addChild(m_drive, m_frontLeft);
     SendableRegistry.addChild(m_drive, m_rearLeft);
@@ -121,8 +127,11 @@ public void tempDriveProgram(){
   }
 
   @Override
+  /**
+   * Update the odometry in the periodic block
+   */
   public void periodic() {
-    // Update the odometry in the periodic block
+    
     m_odometry.update(m_gyro.getRotation2d(), getCurrentWheelDistances());
 
   }
