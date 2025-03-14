@@ -77,7 +77,8 @@ public class Drivetrain extends SubsystemBase {
     frontRightConfig.idleMode(IdleMode.kCoast);
     rearRightConfig.inverted(false);
     rearRightConfig.idleMode(IdleMode.kCoast);
-
+    rearLeftConfig.inverted(false);
+    rearRightConfig.idleMode(IdleMode.kCoast);
     m_frontLeft.configure(frontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     
@@ -86,11 +87,10 @@ public class Drivetrain extends SubsystemBase {
     m_rearRight.setNeutralMode(NeutralMode.Coast);
     m_rearLeft.setNeutralMode(NeutralMode.Coast);
 
-    m_frontLeft.setInverted(InvertType.None);
-    m_rearLeft.setInverted(InvertType.None);
-    m_frontRight.setInverted(InvertType.InvertMotorOutput);
-    m_rearRight.setInverted(InvertType.InvertMotorOutput);
-
+    m_frontLeft.setInverted(toggleFieldDrive);
+    m_rearLeft.setInverted(toggleFieldDrive);
+    m_frontRight.setInverted(toggleFieldDrive);
+    m_rearRight.setInverted(toggleFieldDrive);
     m_drive.setDeadband(0.1);
 
   
@@ -123,13 +123,13 @@ public class Drivetrain extends SubsystemBase {
    * @param zRotation The robot's rotation rate around the Z axis [-1.0..1.0]. Clockwise is positive.
    * @param gyroAngle The current angle reading from the gyro in degrees around the Z axis. Use this to implement field-oriented controls.
    */
-  // public void driveCartesian(DoubleSupplier ySpeed, DoubleSupplier xSpeed, DoubleSupplier zRotation, Rotation2d gyroAngle) {
-  //   m_drive.driveCartesian(
-  //     ySpeed.getAsDouble(), 
-  //     xSpeed.getAsDouble(), 
-  //     zRotation.getAsDouble() * DriveConstants.kTurningSlowDown, 
-  //     gyroAngle);
-  // }
+  public void driveCartesian(double ySpeed, double xSpeed, double zRotation, Rotation2d gyroAngle) {
+    m_drive.driveCartesian(
+      ySpeed, 
+      xSpeed,
+      zRotation * DriveConstants.kTurningSlowDown, 
+      gyroAngle);
+  }
 
   /**
    * Sets the mode of operation during neutral throttle output.
