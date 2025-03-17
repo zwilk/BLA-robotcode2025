@@ -14,7 +14,10 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import java.util.function.DoubleSupplier;
 import java.util.function.IntFunction;
 
+import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 
@@ -53,23 +56,26 @@ public class Drivetrain extends SubsystemBase {
 
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(DriveConstants.kS, DriveConstants.kV);
   private final PIDController m_turnController = new PIDController(DriveConstants.kP, DriveConstants.kI, DriveConstants.kD);
+  private final Pigeon2 m_gyro = new Pigeon2(DriveConstants.kPigeonID);
 
-  private final SparkMaxConfig frontLeftConfig;
-  private final SparkMaxConfig frontRightConfig;
-  private final SparkMaxConfig rearRightConfig;
-  private final SparkMaxConfig rearLeftConfig;
-  private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
-  private final NetworkTableEntry m_toggle;
-  private final NetworkTableEntry m_maxSpeed;
-  private final NetworkTableEntry m_gyroAngle;
+  private final SparkMaxConfig frontLeftConfig = new SparkMaxConfig();
+  private final SparkMaxConfig frontRightConfig = new SparkMaxConfig();
+  private final SparkMaxConfig rearRightConfig = new SparkMaxConfig();
+  private final SparkMaxConfig rearLeftConfig = new SparkMaxConfig();
+  // private final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");
+  // private final double m_toggle;
+  // private final NetworkTableEntry m_maxSpeed;
+  // private final NetworkTableEntry m_gyroAngle;
 
   public boolean toggleFieldDrive = false;
-  public double tempSpeed;
+  public double tempSpeed =1;
+  private double maxSpeed;
 
   /**
    * Drivetrain Subsystem. This is the subsystem that controls the drivetrain.
    */
   public Drivetrain() {
+
 
     frontLeftConfig.inverted(false);
     frontLeftConfig.idleMode(IdleMode.kCoast);
@@ -78,19 +84,15 @@ public class Drivetrain extends SubsystemBase {
     rearRightConfig.inverted(false);
     rearRightConfig.idleMode(IdleMode.kCoast);
     rearLeftConfig.inverted(false);
-    rearRightConfig.idleMode(IdleMode.kCoast);
-    m_frontLeft.configure(frontLeftConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    rearLeftConfig.idleMode(IdleMode.kCoast);
 
-    
-    m_rearLeft.setNeutralMode(NeutralMode.Coast);
-    m_frontRight.setNeutralMode(NeutralMode.Coast);
-    m_rearRight.setNeutralMode(NeutralMode.Coast);
-    m_rearLeft.setNeutralMode(NeutralMode.Coast);
 
-    m_frontLeft.setInverted(toggleFieldDrive);
-    m_rearLeft.setInverted(toggleFieldDrive);
-    m_frontRight.setInverted(toggleFieldDrive);
-    m_rearRight.setInverted(toggleFieldDrive);
+    m_frontLeft.configure(frontLeftConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters);
+    m_rearLeft.configure(rearLeftConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters);
+    m_frontRight.configure(frontRightConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters);
+    m_rearRight.configure(rearRightConfig, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kNoPersistParameters);
+
+
     m_drive.setDeadband(0.1);
 
   
@@ -100,8 +102,8 @@ public class Drivetrain extends SubsystemBase {
     // m_gyroAngle = m_tab.add("Gyro Angle", getGyroAngle()).withPosition(4, 2).getEntry();
     // m_maxSpeed = m_tab.add("Max Speed", 1.0).withPosition(2, 2).withSize(2, 1).withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("min", 0, "max", 1)).getEntry();
     // // m_tab.add("Turning PID", m_turnController).withPosition(7, 0).withSize(1, 2).withWidget(BuiltInWidgets.kPIDController);
-
-    m_maxSpeed.setDouble(DriveConstants.kDefaultSpeed);
+    
+      maxSpeed = DriveConstants.kDefaultSpeed;
   }
 
   /**
@@ -173,7 +175,7 @@ public class Drivetrain extends SubsystemBase {
    * @return The distance in meters.
    */
   public double getRightDistance() {
-    return ((-m_frontRight.getSelectedSensorPosition() / DriveConstants.kEncoderCPR / DriveConstants.kGearRatio) * DriveConstants.kWheelCircumferenceMeters);
+    return ((-m_frontRight.getEncoder().getPosition() / DriveConstants.kEncoderCPR / DriveConstants.kGearRatio) * DriveConstants.kWheelCircumferenceMeters);
   }
 
   /**
@@ -181,7 +183,7 @@ public class Drivetrain extends SubsystemBase {
    * @return The distance in meters.
    */
   public double getLeftDistance() {
-    return ((-m_frontLeft.getSelectedSensorPosition() / DriveConstants.kEncoderCPR / DriveConstants.kGearRatio) * DriveConstants.kWheelCircumferenceMeters);
+    return ((-m_frontLeft.getEncoder().getPosition() / DriveConstants.kEncoderCPR / DriveConstants.kGearRatio) * DriveConstants.kWheelCircumferenceMeters);
 
   }
 
@@ -194,10 +196,10 @@ public class Drivetrain extends SubsystemBase {
   }
  /** Resets the drive encoders to currently read a position of 0. */
  public void resetEncoders() {
-  m_frontLeft.reset();
-  m_rearLeft.reset();
-  m_frontRight.reset();
-  m_rearRight.reset();
+  m_frontLeft.getEncoder().setPosition(0);
+  m_rearLeft.getEncoder().setPosition(0);
+  m_frontRight.getEncoder().setPosition(0);
+  m_rearRight.getEncoder().setPosition(0);;
 }
 
   /**
@@ -205,7 +207,7 @@ public class Drivetrain extends SubsystemBase {
    * @return The current angle value in degrees (-180 to 180).
    */
   public double getGyroAngle() {
-    return m_gyro.getYaw();
+    return m_gyro.getYaw().getValueAsDouble();
   }
 
   /**
@@ -214,7 +216,7 @@ public class Drivetrain extends SubsystemBase {
    */
   public void toggleFieldDrive() {
     toggleFieldDrive = !toggleFieldDrive;
-    m_toggle.setBoolean(toggleFieldDrive);
+    //m_toggle.setBoolean(toggleFieldDrive);
   }
 
   /**
@@ -241,15 +243,14 @@ public class Drivetrain extends SubsystemBase {
    * Will return to the original speed before method was called.
    */
   public void slowDriveSpeed() {
-    tempSpeed = m_maxSpeed.getDouble(1.0);
-    m_maxSpeed.setDouble(tempSpeed * DriveConstants.kSlowDriveSpeed);
+    maxSpeed = tempSpeed*.5;
   }
 
   /**
    * Returns the drive speed to the original speed.
    */
   public void normalDriveSpeed() {
-    m_maxSpeed.setDouble(tempSpeed);
+    maxSpeed = tempSpeed;
   }
 
   /**
@@ -276,7 +277,7 @@ public class Drivetrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    setMaxSpeed(m_maxSpeed.getDouble(1.0));
-    m_gyroAngle.setNumber(getGyroAngle());
+     setMaxSpeed(maxSpeed);
+    // m_gyroAngle.setNumber(getGyroAngle());
   }
 }

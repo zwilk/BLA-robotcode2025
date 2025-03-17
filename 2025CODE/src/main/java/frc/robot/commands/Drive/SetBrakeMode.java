@@ -25,6 +25,6 @@ public class SetBrakeMode extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.setNeutralMode(NeutralMode.Brake);
+    //m_drive.setNeutralMode(NeutralMode.Brake);
   }
 }

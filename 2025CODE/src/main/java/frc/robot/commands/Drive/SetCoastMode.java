@@ -25,6 +25,6 @@ public class SetCoastMode extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_drive.setNeutralMode(NeutralMode.Coast);
+    //m_drive.setNeutralMode(NeutralMode.Coast);
   }
 }
