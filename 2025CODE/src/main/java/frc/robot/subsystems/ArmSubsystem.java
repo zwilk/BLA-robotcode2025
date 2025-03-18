@@ -1,35 +1,39 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RollerConstants;
+import frc.robot.Constants.ArmConstants;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-/** Class to run the rollers over CAN */
-public class Intake extends SubsystemBase {
-  private final SparkMax rollerMotor;
+/** Class to run the algae rollers over CAN */
+public class ArmSubsystem extends SubsystemBase {
+  private final SparkMax armLeader;
 
-  public Intake() {
-    // Set up the roller motor as a brushless motor
-    rollerMotor = new SparkMax(RollerConstants.ROLLER_MOTOR_ID, MotorType.kBrushed);
+  public ArmSubsystem() {
+    // Set up the roller motors as brushed motors
+    armLeader = new SparkMax(ArmConstants.ARM_LEADER_ID, MotorType.kBrushed);
 
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
     // which sets or gets parameters during operation may need a shorter timeout.
-    rollerMotor.setCANTimeout(250);
+    armLeader.setCANTimeout(250);
 
     // Create and apply configuration for roller motor. Voltage compensation helps
     // the roller behave the same as the battery
     // voltage dips. The current limit helps prevent breaker trips or burning out
     // the motor in the event the roller stalls.
-    SparkMaxConfig rollerConfig = new SparkMaxConfig();
-    rollerConfig.voltageCompensation(RollerConstants.ROLLER_MOTOR_VOLTAGE_COMP);
-    rollerConfig.smartCurrentLimit(RollerConstants.ROLLER_MOTOR_CURRENT_LIMIT);
-    rollerConfig.inverted(false);
-    rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    SparkMaxConfig armConfig = new SparkMaxConfig();
+    armConfig.voltageCompensation(ArmConstants.ARM_MOTOR_VOLTAGE_COMP);
+    armConfig.smartCurrentLimit(ArmConstants.ARM_MOTOR_CURRENT_LIMIT);
+    armConfig.inverted(false);
+    armConfig.idleMode(IdleMode.kBrake);
+
+    armLeader.configure(armConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
   }
 
   @Override
@@ -37,7 +41,7 @@ public class Intake extends SubsystemBase {
   }
 
   /** This is a method that makes the roller spin */
-  public void runRoller(double forward, double reverse) {
-    rollerMotor.set(forward - reverse);
+  public void runArm(double forward, double reverse) {
+    armLeader.set(forward - reverse);
   }
 }
