@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.OperatorConstants;
 // import frc.robot.commands.Climb.ResetArmEncoders;
 import frc.robot.commands.Drive.CartesianDrive;
 import frc.robot.commands.Drive.DriveToTarget;
@@ -199,7 +199,7 @@ public class RobotContainer {
 
   // Controllers
   // public final XboxController m_xboxDriver = new XboxController(OIConstants.kXboxDriverController);
-  public final XboxController controller = new XboxController(OIConstants.kFlightDriverController);
+  public final XboxController controller = new XboxController(OperatorConstants.DRIVER_CONTROLLER_PORT);
  
 
   public final ShuffleboardTab m_tab = Shuffleboard.getTab("Main");

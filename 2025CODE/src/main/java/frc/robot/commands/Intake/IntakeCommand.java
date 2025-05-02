@@ -1,7 +1,7 @@
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeSubsystem;
 import java.util.function.DoubleSupplier;
 
 // Command to run the roller with joystick inputs
@@ -9,15 +9,15 @@ public class Intake extends Command {
   private final DoubleSupplier forward;
   private final DoubleSupplier reverse;
   // private final CANRollerSubsystem rollerSubsystem;
-  private final Intake rollerSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
 
-  public Intake(
-      DoubleSupplier forward, DoubleSupplier reverse, RollerSubsystem rollerSubsystem) {
+  public  Intake(
+      DoubleSupplier forward, DoubleSupplier reverse, IntakeSubsystem intakeSubsytem) {
     this.forward = reverse;
     this.reverse = forward;
-    this.rollerSubsystem = rollerSubsystem;
+    this.intakeSubsystem = intakeSubsytem;
 
-    addRequirements(this.rollerSubsystem);
+    addRequirements(this.intakeSubsystem);
   }
 
   @Override
@@ -28,7 +28,7 @@ public class Intake extends Command {
   @Override
   public void execute() {
     // Run the roller motor at the desired speed
-    rollerSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
+    intakeSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
   }
 
   // Runs each time the command ends via isFinished or being interrupted.

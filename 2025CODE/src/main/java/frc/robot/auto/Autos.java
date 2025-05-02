@@ -48,11 +48,11 @@ public class SimpleCoralAuto extends Command {
 
       if (m_timer.get() < drive_time_threshold) {
 
-          m_drive.driveArcade(0.5, 0);
+          m_drive.driveCartesian(.5,0,0);
 
       } else if (m_timer.get() > drive_time_threshold && m_timer.get() < eject_time_threshold) {
 
-          m_drive.driveArcade(0.0, 0);
+          m_drive.driveCartesian(0,0,0);
           m_roller.runRoller(RollerConstants.ROLLER_EJECT_VALUE, 0);
 
       }
@@ -62,7 +62,7 @@ public class SimpleCoralAuto extends Command {
   public void end(boolean interrupted) {
       // When interrupted, stop the drivetrain, roller, and the timer.
 
-      m_drive.driveArcade(0, 0);
+      m_drive.driveCartesian( 0 ,0, 0);
       m_roller.runRoller(0, 0);
       
       m_timer.stop();

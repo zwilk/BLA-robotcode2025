@@ -41,64 +41,31 @@ public final class Constants {
         public static final double kMetersPerTick = kEncoderCPR * kGearRatio * kWheelCircumferenceMeters;
     }
 
-    public static final class IntakeConstants {
-        public static final int kSideIntakeMotor = 5;
-        public static final int kFrontIntakeMotor = 6;
-        public static final double kIntakeMotorSpeed = 0.5;
-    }
-
-    public static final class FeederConstants {
-        public static final int kBeltFeederMotor = 7;
-        public static final int kFrontFeederMotor = 8;
-        public static final double kFeederMotorSpeed = 1.0;
-    }
-
-    public static final class ShooterConstants {
-        public static final int kShooterMotor = 9;
-        public static final double kSlowShootRPM = 3800; // 3600
-        public static final double kMidShootRPM = 4200; // 3800
-        public static final double kFastShootRPM = 4500; // 4000
-        public static final double kLowerShootRPM = 3000;
-        public static final double kS = 0.53707;
-        public static final double kV = 0.0;
-        public static final double kP = 0.008;
-        public static final double kI = 0.0;
-        public static final double kD = 0.0;
-        public static final double kPIDAdjust = 1.225;
-    }
-
-    public static final class ClimbConstants {
-        public static final int kArmMotor = 10;
-        public static final int kHookMotor = 11;
-        public static final double kArmMotorSpeed = 1.0;
-        public static final double kHookMotorSpeed = 1.0;
-        public static final double kArmGearRatio = 48;
-        public static final double kHookGearRatio = 36;
-        public static final double kArmEncoderMaxValue = 300;
-        public static final double kHookEncoderMaxValue = 340;
-    }
-
-    public static final class LimelightConstant {
-        public static final double kLimelightHeightMeters = Units.inchesToMeters(34);
-        public static final double kLimelightAngle = 30;
-        public static final double kHubHeightMeters = Units.inchesToMeters(104);
-    }
-
-    public static final class OIConstants {
-        public static final int kXboxDriverController = 0;
-        public static final int kFlightDriverController = 1;
-        public static final int kOperatorController = 2;
-    }
-
-    public static final class ArmConstants {
-        public static final int ARM_MOTOR_ID = 6;
-        public static final int ARM_MOTOR_CURRENT_LIMIT = 60;
-        public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
-        public static final double ARM_SPEED_DOWN = 0.4;
-        public static final double ARM_SPEED_UP = -0.4;
-        public static final double ARM_HOLD_DOWN = 0.1;
-        public static final double ARM_HOLD_UP = -0.15;
-    }
+    public static final class RollerConstants {
+        public static final int ROLLER_MOTOR_ID = 6;
+        public static final int ROLLER_MOTOR_CURRENT_LIMIT = 80;
+        public static final double ROLLER_MOTOR_VOLTAGE_COMP = 10;
+        public static final double ROLLER_EJECT_VALUE = 0.7;
+        public static final double ROLLER_INTAKE_VALUE = 0.7;
+      }
     
-}
-  
+      public static final class ArmConstants {
+        public static final int ARM_LEADER_ID = 5;
+        public static final int ARM_MOTOR_CURRENT_LIMIT = 80;
+        public static final double ARM_MOTOR_VOLTAGE_COMP = 10;
+        public static final double ARM_UP_VALUE = 0.5;
+        public static final double ARM_DOWN_VALUE = 0.3;
+      } 
+      
+      public static final class ClimbConstants {
+        public static final int CLIMB_MOTOR_ID = 7;
+        public static final int CLIMB_MOTOR_CURRENT_LIMIT = 80;
+        public static final double CLIMB_MOTOR_VOLTAGE_COMP = 10;
+        public static final double CLIMB_VALUE = 0.7;
+      }
+    
+      public static final class OperatorConstants {
+        public static final int DRIVER_CONTROLLER_PORT = 0;
+    
+      }
+    }
