@@ -1,47 +1,43 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ArmSubsystem;
-import java.util.function.DoubleSupplier;
 
-// Command to run the roller with joystick inputs
 public class ArmCommand extends Command {
-  private final DoubleSupplier forward;
-  private final DoubleSupplier reverse;
-  // private final CANRollerSubsystem rollerSubsystem;
-  private final ArmSubsystem armSubsystem;
+  private final ArmSubsystem m_ArmSubsystem;
+  private double m_speed;
 
-  public ArmCommand(
-      DoubleSupplier forward, DoubleSupplier reverse, ArmSubsystem armSubsystem) {
-    this.forward = reverse;
-    this.reverse = forward;
-    this.armSubsystem = armSubsystem;
-
-    addRequirements(this.armSubsystem);
+  /** Creates a new IntakeCommands. */
+  public ArmCommand(ArmSubsystem Arm, double speed) {
+    m_ArmSubsystem = Arm;
+    m_speed = speed;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_ArmSubsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
 
-  // Runs every cycle while the command is scheduled (~50 times per second)
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Run the roller motor at the desired speed
-    armSubsystem.runArm(forward.getAsDouble(), reverse.getAsDouble());
+    m_ArmSubsystem.runArm(m_speed);
   }
 
-  // Runs each time the command ends via isFinished or being interrupted.
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean isInterrupted) {
+  public void end(boolean interrupted) {
   }
 
-  // Runs every cycle while the command is scheduled to check if the command is
-  // finished
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Return false to indicate that this command never ends. It can be interrupted
-    // by another command needing the same subsystem.
     return false;
   }
 }

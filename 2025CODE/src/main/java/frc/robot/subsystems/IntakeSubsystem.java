@@ -4,44 +4,39 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RollerConstants;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
-/** Class to run the rollers over CAN */
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.IntakeConstants;
+
 public class IntakeSubsystem extends SubsystemBase {
-  private final SparkMax rollerMotor;
+  private final SparkMax intakeMotor;
+  private final SparkMaxConfig intakeConfig;
 
+  /** Creates a new IntakeSubsystem. */
   public IntakeSubsystem() {
-    // Set up the roller motor as a brushless motor
-    rollerMotor = new SparkMax(RollerConstants.ROLLER_MOTOR_ID, MotorType.kBrushed);
+    
+    intakeMotor = new SparkMax(5, MotorType.kBrushless);
 
-    // Set can timeout. Because this project only sets parameters once on
-    // construction, the timeout can be long without blocking robot operation. Code
-    // which sets or gets parameters during operation may need a shorter timeout.
-    rollerMotor.setCANTimeout(250);
+    intakeConfig = new SparkMaxConfig();
+    intakeConfig.idleMode(IdleMode.kBrake);
+    intakeConfig.inverted(false);
+    
+    intakeConfig.smartCurrentLimit(IntakeConstants.INTAKE_MOTOR_CURRENT_LIMIT);
+    intakeConfig.voltageCompensation(IntakeConstants.INTAKE_MOTOR_VOLTAGE_COMP);
 
-    // Create and apply configuration for roller motor. Voltage compensation helps
-    // the roller behave the same as the battery
-    // voltage dips. The current limit helps prevent breaker trips or burning out
-    // the motor in the event the roller stalls.
-    SparkMaxConfig rollerConfig = new SparkMaxConfig();
-    rollerConfig.voltageCompensation(RollerConstants.ROLLER_MOTOR_VOLTAGE_COMP);
-    rollerConfig.smartCurrentLimit(RollerConstants.ROLLER_MOTOR_CURRENT_LIMIT);
-    rollerConfig.inverted(false);
-    rollerMotor.configure(rollerConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    intakeConfig.apply(intakeConfig);
   }
 
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
   }
 
-  /** This is a method that makes the roller spin */
-  public void runRoller(double forward, double reverse) {
-    rollerMotor.set(forward - reverse);
+  public void runMotor(double speed) {
+    intakeMotor.set(speed);
   }
 }

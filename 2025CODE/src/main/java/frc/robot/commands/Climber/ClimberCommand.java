@@ -1,47 +1,41 @@
-package frc.robot.commands.Climber;
+// // Copyright (c) FIRST and other WPILib contributors.
+// // Open Source Software; you can modify and/or share it under the terms of
+// // the WPILib BSD license file in the root directory of this project.
 
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.ClimberSubsystem;
-import java.util.function.DoubleSupplier;
+// package frc.robot.commands.Climber;
 
-// Command to run the roller with joystick inputs
-public class ClimberCommand extends Command {
-  private final DoubleSupplier forward;
-  private final DoubleSupplier reverse;
-  // private final CANRollerSubsystem rollerSubsystem;
-  private final ClimberSubsystem climbSubsystem;
+// import edu.wpi.first.wpilibj2.command.Command;
+// import frc.robot.subsystems.climberSubsytem;
 
-  public ClimberCommand(
-      DoubleSupplier forward, DoubleSupplier reverse, ClimberSubsystem climbSubsystem) {
-    this.forward = reverse;
-    this.reverse = forward;
-    this.climbSubsystem = climbSubsystem;
+// public class ClimberCommand extends Command {
+//   private final climberSubsytem m_climberSubsystem;
+//   private double m_speed;
+//   /** Creates a new IntakeCommands. */
+//   public ClimberCommand(climberSubsytem m_climber, double speed) {
+  
+//     m_climberSubsystem = m_climber;
+//     m_speed = speed;
+//     // Use addRequirements() here to declare subsystem dependencies.
+//     addRequirements(m_climberSubsystem);
+//   }
 
-    addRequirements(this.climbSubsystem);
-  }
+//   // Called when the command is initially scheduled.
+//   @Override
+//   public void initialize() {}
 
-  @Override
-  public void initialize() {
-  }
+//   // Called every time the scheduler runs while the command is scheduled.
+//   @Override
+//   public void execute() {
+//     m_climberSubsystem.runMotor(m_speed);
+//   }
 
-  // Runs every cycle while the command is scheduled (~50 times per second)
-  @Override
-  public void execute() {
-    // Run the roller motor at the desired speed
-    climbSubsystem.runClimb(forward.getAsDouble(), reverse.getAsDouble());
-  }
+//   // Called once the command ends or is interrupted.
+//   @Override
+//   public void end(boolean interrupted) {}
 
-  // Runs each time the command ends via isFinished or being interrupted.
-  @Override
-  public void end(boolean isInterrupted) {
-  }
-
-  // Runs every cycle while the command is scheduled to check if the command is
-  // finished
-  @Override
-  public boolean isFinished() {
-    // Return false to indicate that this command never ends. It can be interrupted
-    // by another command needing the same subsystem.
-    return false;
-  }
-}
+//   // Returns true when the command should end.
+//   @Override
+//   public boolean isFinished() {
+//     return false;
+//   }
+// }

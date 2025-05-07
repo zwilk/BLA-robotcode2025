@@ -1,47 +1,41 @@
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
 package frc.robot.commands.Intake;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.IntakeSubsystem;
-import java.util.function.DoubleSupplier;
 
-// Command to run the roller with joystick inputs
-public class Intake extends Command {
-  private final DoubleSupplier forward;
-  private final DoubleSupplier reverse;
-  // private final CANRollerSubsystem rollerSubsystem;
-  private final IntakeSubsystem intakeSubsystem;
-
-  public  Intake(
-      DoubleSupplier forward, DoubleSupplier reverse, IntakeSubsystem intakeSubsytem) {
-    this.forward = reverse;
-    this.reverse = forward;
-    this.intakeSubsystem = intakeSubsytem;
-
-    addRequirements(this.intakeSubsystem);
+public class IntakeCommand extends Command {
+  private final IntakeSubsystem m_intakeSubsystem;
+  private double m_speed;
+  /** Creates a new IntakeCommands. */
+  public IntakeCommand(IntakeSubsystem intake, double speed) {
+  
+    m_intakeSubsystem = intake;
+    m_speed = speed;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_intakeSubsystem);
   }
 
+  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
-  // Runs every cycle while the command is scheduled (~50 times per second)
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // Run the roller motor at the desired speed
-    intakeSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
+    m_intakeSubsystem.runMotor(m_speed);
   }
 
-  // Runs each time the command ends via isFinished or being interrupted.
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean isInterrupted) {
-  }
+  public void end(boolean interrupted) {}
 
-  // Runs every cycle while the command is scheduled to check if the command is
-  // finished
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Return false to indicate that this command never ends. It can be interrupted
-    // by another command needing the same subsystem.
     return false;
   }
 }

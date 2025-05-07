@@ -1,47 +1,50 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+// // // Copyright (c) FIRST and other WPILib contributors.
+// // // Open Source Software; you can modify and/or share it under the terms of
+// // // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+// package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ClimbConstants;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig;
+// // import com.revrobotics.spark.SparkBase.PersistMode;
+// // import com.revrobotics.spark.SparkBase.ResetMode;
+// import com.revrobotics.spark.SparkLowLevel.MotorType;
+// import com.revrobotics.spark.config.SparkMaxConfig;
+// import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+// import com.revrobotics.spark.SparkMax;
+// // import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
+// // import com.revrobotics.spark.config.SparkMaxConfig;
 
-/** Class to run the rollers over CAN */
-public class ClimberSubsystem extends SubsystemBase {
-  private final SparkMax climbMotor;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// // import frc.robot.Constants.ArmConstants;
+// /*import frc.robot.Constants.ClimbConstants;
 
-  public ClimberSubsystem() {
-    // Set up the roller motor as a brushless motor
-    climbMotor = new SparkMax(ClimbConstants.CLIMB_MOTOR_ID, MotorType.kBrushless);
+// JG 3/26: commented out this import, since I did not 
+// understand how to use the constant values
+// in the list for the climber
 
-    // Set can timeout. Because this project only sets parameters once on
-    // construction, the timeout can be long without blocking robot operation. Code
-    // which sets or gets parameters during operation may need a shorter timeout.
-    climbMotor.setCANTimeout(250);
+// */
 
-    // Create and apply configuration for roller motor. Voltage compensation helps
-    // the roller behave the same as the battery
-    // voltage dips. The current limit helps prevent breaker trips or burning out
-    // the motor in the event the roller stalls.
-    SparkMaxConfig climbConfig = new SparkMaxConfig();
-    climbConfig.voltageCompensation(ClimbConstants.CLIMB_MOTOR_VOLTAGE_COMP);
-    climbConfig.smartCurrentLimit(ClimbConstants.CLIMB_MOTOR_CURRENT_LIMIT);
-    climbConfig.inverted(false);
-    climbMotor.configure(climbConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-  }
+// public class climberSubsytem extends SubsystemBase {
+//   /** Creates a new climberSubsytem. */
+//   private final SparkMax climbLeader;
+//   private final SparkMaxConfig climbConfig;
+//   public climberSubsytem() {
+// climbLeader = new SparkMax(7,MotorType.kBrushless);
 
-  @Override
-  public void periodic() {
-  }
+// // Set can timeout. Because this project only sets parameters / once on
+//     // construction, the timeout can be long without blocking robot operation. Code
+//     // which sets or gets parameters during operation may need a shorter timeout.
+//     climbLeader.setCANTimeout(250);
+//     climbConfig = new SparkMaxConfig();
+//     climbConfig.idleMode(IdleMode.kBrake);
+//     climbConfig.inverted(false);
 
-  /** This is a method that makes the roller spin */
-  public void runClimb(double forward, double reverse) {
-    climbMotor.set(forward - reverse);
-  }
-}
+//     climbConfig.apply(climbConfig);
+//   }
+//   @Override
+//   public void periodic() {
+//     // This method will be called once per scheduler run
+//   }
+//   public void runMotor(double speed) {
+//     climbLeader.set(speed);
+//   }
+// }
